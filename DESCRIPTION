@@ -1,0 +1,15 @@
+Package: PISAtools
+Version: 0.1
+Type: Package
+Title: A set of tools useful when dealing with PISA data.
+Author: Przemyslaw Biecek <przemyslaw.biecek@gmail.com>
+Maintainer: Przemyslaw Biecek <przemyslaw.biecek@gmail.com>
+Description:  Indicies, plots, other small tools useful when dealing with PISA data.
+Repository: CRAN
+License: GPL-2
+LazyLoad: yes
+LazyData: yes
+URL: http://pisa2009.acer.edu.au/
+Depends: R (>= 2.8.0)
+LinkingTo:
+Imports:
