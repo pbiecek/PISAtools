@@ -2,7 +2,7 @@
 getWeightedAverages <- function(values, groups, weights = 1) {
   require(plyr)
   require(reshape2)
-  df <- cbind(values, weights, groups)
+  df <- data.frame(values, weights, groups)
   mdf <- melt(df, id=c("groups","weights"), measure=colnames(df)[1:(ncol(df)-2)])
   rres <- ddply(mdf, .(groups, variable), summarize, avg = weighted.mean(value, weights, na.rm=T)) 
   acast(rres, groups~variable, value.var="avg")
