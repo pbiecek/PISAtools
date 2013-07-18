@@ -8,7 +8,10 @@ getWeightedAverages <- function(values, groups, weights = 1) {
   acast(rres, groups~variable, value.var="avg")
 }
 
-getRanking <- function(values, groups, weights = 1) {
-  apply(getWeightedAverages(values, groups, weights), 2, rank)
+getRanking <- function(values, groups, weights = 1, sort = NA) {
+  tdf <- getWeightedAverages(values, groups, weights)
+  tdf <- nrow(tdf) + 1 - apply(tdf, 2, rank)
+  if (!is.na(sort)) tdf <- tdf[order(tdf[,sort]),,drop=FALSE]
+  tdf
 }
 
