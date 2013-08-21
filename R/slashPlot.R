@@ -1,6 +1,6 @@
 slashPlot <- function(factor1, factor2, variable, FUN = mean, ..., normalizeCnts = "row", symbols=LETTERS) {
   tabs <- unclass(by(variable, list(factor1, factor2), FUN, ...))
-  cnts <- unclass(by(variable, list(factor1, factor2), length))
+  cnts <- unclass(by(variable, list(factor1, factor2), function(x) if (is.null(dim(x))) length(x) else dim(x)[1] ))
   cnts <- switch(normalizeCnts,
               row = t(apply(cnts, 1, function(x) x/max(x, na.rm=TRUE))),
                  col = apply(cnts, 2, function(x) x/max(x, na.rm=TRUE)),
