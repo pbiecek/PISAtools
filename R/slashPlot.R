@@ -8,13 +8,14 @@ slashPlot <- function(factor1, factor2, variable, FUN = mean, ..., normalizeCnts
                  cnts)
   vecs <- unclass(by(variable, factor1, FUN, ...))
   
-  plot(rep(0,length(vecs)), vecs, pch=16, las=1, xlim=range(tabs - matrix(vecs, nrow(tabs), ncol(tabs)), na.rm=TRUE), ylim=range(tabs, na.rm=TRUE), 
-       yaxt="n", bty="n", xlab="", ylab="", type="n")
+  plot(tabs - matrix(vecs, nrow(tabs), ncol(tabs)), tabs, las=1, yaxt="n", bty="n", xlab="", ylab="", type="n")
   abline(v=0)
   for (i in 1:nrow(tabs)) {
-    for (j in i:ncol(tabs)) {
-      lines(c(0, tabs[i,j] - vecs[i]), c(vecs[i], tabs[i,j]), col="#00000044")
-      points( tabs[i,j] - vecs[i], tabs[i,j], pch=symbols[j],  cex=cnts[i,j])
+    for (j in 1:ncol(tabs)) {
+      if (!is.na(tabs[i,j])) {
+        lines(c(0, tabs[i,j] - vecs[i]), c(vecs[i], tabs[i,j]), col="#00000044")
+        points( tabs[i,j] - vecs[i], tabs[i,j], pch=symbols[j],  cex=cnts[i,j])
+      }
     }
   }
   axis(4, vecs,  names(vecs), las=1)
