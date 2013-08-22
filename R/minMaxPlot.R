@@ -1,4 +1,4 @@
-minMaxPlot <- function(factor1, factor2, variable, FUN = mean, ..., normalizeCnts = "row", vnames=c("lower", "higher", "average")) {
+minMaxPlot <- function(factor1, factor2, variable, FUN = mean, ..., normalizeCnts = "none", vnames=c("lower", "higher", "average")) {
   tabs <- unclass(by(variable, list(factor1, factor2), FUN, ...))
   cnts <- unclass(by(variable, list(factor1, factor2), function(x) if (is.null(dim(x))) length(x) else dim(x)[1] ))
   cnts <- switch(normalizeCnts,

@@ -1,11 +1,11 @@
 \name{minMaxPlot}
 \alias{minMaxPlot}
-\title{Slash Plot for interaction of two variables}
+\title{Plot for joint distribution of min/max of pairs (pairs like parental education, occulation status).}
 \description{
-A plot that presents interaction between two variables
+Features like occupation or edducation are related to parent. Since most students have two parents one can ask how the lower/higer education/occupation status of these two affect the pupil performance. Here is where the minMaxPlot can be habdy.
 }
 \usage{
-	minMaxPlot(factor1, factor2, variable, FUN = mean, ..., normalizeCnts = "row", symbols=LETTERS)
+	minMaxPlot(factor1, factor2, variable, FUN = mean, ..., normalizeCnts = "none", vnames=c("lower", "higher", "average"))
 }
 \author{
  Przemyslaw Biecek
