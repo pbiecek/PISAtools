@@ -1,4 +1,4 @@
-minMaxPlot <- function(factor1, factor2, variable, FUN = mean, ..., normalizeCnts = "row", symbols=LETTERS) {
+minMaxPlot <- function(factor1, factor2, variable, FUN = mean, ..., normalizeCnts = "row", vnames=c("lower", "higher", "average")) {
   tabs <- unclass(by(variable, list(factor1, factor2), FUN, ...))
   cnts <- unclass(by(variable, list(factor1, factor2), function(x) if (is.null(dim(x))) length(x) else dim(x)[1] ))
   cnts <- switch(normalizeCnts,
@@ -6,19 +6,14 @@ minMaxPlot <- function(factor1, factor2, variable, FUN = mean, ..., normalizeCnt
                  col = apply(cnts, 2, function(x) x/max(x, na.rm=TRUE)),
                  all = cnts/max(cnts, na.rm=TRUE),
                  cnts)
-  vecs <- unclass(by(variable, factor1, FUN, ...))
   
-  plot(tabs - matrix(vecs, nrow(tabs), ncol(tabs)), tabs, las=1, yaxt="n", bty="n", xlab="", ylab="", type="n")
-  abline(v=0)
-  for (i in 1:nrow(tabs)) {
-    for (j in 1:ncol(tabs)) {
-      if (!is.na(tabs[i,j])) {
-        lines(c(0, tabs[i,j] - vecs[i]), c(vecs[i], tabs[i,j]), col="#00000044")
-        points( tabs[i,j] - vecs[i], tabs[i,j], pch=symbols[j],  cex=cnts[i,j])
-      }
-    }
-  }
-  axis(4, vecs,  names(vecs), las=1)
-  axis(2,las=1)
-  legend("topleft", colnames(tabs), pch=symbols[1:ncol(tabs)], bty="n", cex=0.8)
+  long <- na.omit(cbind(as.data.frame(as.table(tabs)), cnt=cut(as.data.frame(as.table(cnts))[,3], 10^(0:7))))
+  long$Var1 <- factor(long$Var1, levels = rev(levels(long$Var1)))
+  
+  require(ggplot2)
+  ggplot(data = na.omit(long),
+         aes(x = Var2, y = Freq, shape=cnt, colour = Var1, group=Var1)) +
+    stat_summary(fun.y=mean, geom="point", size=5) +
+    stat_summary(fun.y=mean, geom="line", size=2) + 
+    xlab(vnames[1]) + ylab(vnames[3]) + scale_color_brewer(palette="Spectral", name=vnames[2]) + theme_bw()
 }
