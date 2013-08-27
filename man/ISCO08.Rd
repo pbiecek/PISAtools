@@ -1,7 +1,7 @@
 \name{ISCO08}
 \alias{ISCO08}
 \docType{data}
-\title{Classification of Occupations in PISA}
+\title{ISCO 08 - International Standard Classification of Occupations 2008}
 \description{
  Occupations in PISA are described with the use of ISCO 08 classification (for PISA 2012).
 

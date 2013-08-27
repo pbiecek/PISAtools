@@ -1,7 +1,7 @@
 \name{ISCO88}
 \alias{ISCO88}
 \docType{data}
-\title{Classification of Occupations in PISA}
+\title{ISCO 88 - International Standard Classification of Occupations 1988}
 \description{
  Occupations in PISA are described with the use of ISCO 88 classification.
 
