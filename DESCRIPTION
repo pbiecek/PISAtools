@@ -10,6 +10,6 @@ License: GPL-2
 LazyLoad: yes
 LazyData: yes
 URL: http://pisa2009.acer.edu.au/
-Depends: R (>= 2.8.0), SAScii, ggplot2
+Depends: R (>= 2.8.0), SAScii, ggplot2, aplpack
 LinkingTo:
 Imports:
