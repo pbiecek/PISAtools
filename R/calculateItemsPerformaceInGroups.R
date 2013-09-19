@@ -1,6 +1,6 @@
 calculateItemsPerformaceInGroups <- function(itemNames, dataset, grVal, cntVal = "CNT", weightVal = "W_FSTUWT", naLevels = c("7", "8")) {
-  res <- array(NA, c(length(itemNames), nlevels(dataset[,cntVal]), nlevels(dataset[,grVal])))
-  dimnames(res) <- list(itemNames, levels(dataset[,cntVal]), levels(dataset[,grVal]))
+  res <- array(NA, c(length(itemNames), nlevels(dataset[,cntVal]), nlevels(factor(dataset[,grVal]))))
+  dimnames(res) <- list(itemNames, levels(dataset[,cntVal]), levels(factor(dataset[,grVal])))
   
   for (i in seq_along(itemNames)) {
     item <- dataset[,grep(colnames(dataset), pattern=substr(itemNames[i],1,7))[1]]
