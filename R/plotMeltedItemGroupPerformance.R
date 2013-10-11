@@ -47,3 +47,19 @@ plotMeltedItemGroupPerformance <- function(migPerformance, selectedCnt = "F011")
     scale_color_manual(values=c("green3", "grey3", "red"))
 }
 
+plotMeltedItemGroupInAreasPerformance <- function(migPerformance, selectedCnt = "F011") {
+  require(ggplot2)
+  if (!"tpos" %in% colnames(migPerformance)) migPerformance$tpos <- max(migPerformance$Value)
+  
+  ggplot(aes(x=factor(Group), y=Value, fill=Area), data=migPerformance) + 
+    geom_boxplot(colour=I("white"), outlier.size=0, width=0.5) + 
+    stat_abline(intercept=0, slope=0, col="black", size=0.5, linetype="dotted") +
+    geom_point(size=I(4), colour=I("grey"), shape=18) + 
+    geom_point(colour="red", size=9, data=migPerformance[migPerformance$Country == selectedCnt, ], shape=18) + 
+    geom_text(aes(y=tpos, label=CentileText), data=migPerformance[migPerformance$Country == selectedCnt, ]) + 
+    theme_bw() + coord_flip() + xlab("") + ylab("") + 
+    theme( legend.position = "none",
+           text=element_text(size=15),
+           panel.border = element_blank()) 
+  }
+
