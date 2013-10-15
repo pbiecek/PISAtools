@@ -17,7 +17,10 @@ meltedItemGroupPerformance <- function(igPerformance) {
     require(reshape2)
     res4 <- na.omit(melt(igPerformance))
     res4$mean <- round(100*
-    sapply(1:nrow(res4), function(i) mean(res4[i,"value"] >= res4[as.character(res4$Var1) == as.character(res4$Var1)[i] ,"value"], na.rm=TRUE)))
+    sapply(1:nrow(res4), function(i) 
+         sum(res4[i,"value"] > res4[as.character(res4$Var1) == as.character(res4$Var1)[i] ,"value"], na.rm=TRUE) /
+             (sum(!is.na(res4[as.character(res4$Var1) == as.character(res4$Var1)[i] ,"value"])) - 1)
+           ))
     res4$text <- paste0(res4$mean, "%")
     res4$kol <-  sapply(1:nrow(res4), function(i) {
         maxi <- max(res4[ res4[,"Var2"] == res4[i,"Var2"] ,"mean"], na.rm=TRUE)
@@ -30,14 +33,13 @@ meltedItemGroupPerformance <- function(igPerformance) {
     res4
 }
 
-plotMeltedItemGroupPerformance <- function(migPerformance, selectedCnt = "F011", addText = FALSE) {
+plotMeltedItemGroupPerformance <- function(migPerformance, selectedCnt = "F011", addText = FALSE, addZero = TRUE) {
   require(ggplot2)
   if (!"tpos" %in% colnames(migPerformance)) migPerformance$tpos <- max(migPerformance$Value)
   migPerformance$sItemGgroup <- as.numeric(migPerformance$ItemGgroup) + 0.25
   
   p <- ggplot(aes(x=ItemGgroup, y=Value, fill="grey"), data=migPerformance) +
     geom_boxplot(colour=I("white"), outlier.size=0, width=0.5) +
-    stat_abline(intercept=0, slope=0, col="black", size=0.5, linetype="dotted") +
     geom_point(size=I(4), colour=I("grey"), shape=18) +
     theme_bw() + coord_flip() + xlab("") + ylab("") +
     theme( legend.position = "none",
@@ -45,18 +47,20 @@ plotMeltedItemGroupPerformance <- function(migPerformance, selectedCnt = "F011",
            panel.border = element_blank()) +
     scale_color_manual(values=c("green3", "grey3", "red"))
   
-  if (!is.na(selectedCnt)) {
+  if (addZero)
+    p <- p +
+      stat_abline(intercept=0, slope=0, col="black", size=0.5, linetype="dotted") 
+    
+  if (!is.na(selectedCnt)) 
     p <- p +
       geom_point(colour="red", size=9, data=migPerformance[migPerformance$CNT == selectedCnt, ], shape=18) +
       geom_text(aes(y=tpos, label=CentileText, colour=CentileColor), data=migPerformance[migPerformance$CNT == selectedCnt, ])
-  }
 
-  if (addText) {
+  if (addText) 
     p <- p + 
       geom_text(aes(y=Value, x=sItemGgroup, label=CNT), data = migPerformance[migPerformance$Centile > 99,], angle=90) +
       geom_text(aes(y=Value, x=sItemGgroup, label=CNT), data = migPerformance[migPerformance$Centile < 1 + min(migPerformance$Centile),], angle=90)
-  }
-
+  
   p
 }
 
