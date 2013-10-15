@@ -36,7 +36,7 @@ meltedItemGroupPerformance <- function(igPerformance) {
 plotMeltedItemGroupPerformance <- function(migPerformance, selectedCnt = "F011", addText = FALSE, addZero = TRUE) {
   require(ggplot2)
   if (!"tpos" %in% colnames(migPerformance)) migPerformance$tpos <- max(migPerformance$Value)
-  migPerformance$sItemGgroup <- as.numeric(migPerformance$ItemGgroup) + 0.25
+  migPerformance$sItemGgroup <- as.numeric(factor(migPerformance$ItemGgroup)) + 0.25
   
   p <- ggplot(aes(x=ItemGgroup, y=Value, fill="grey"), data=migPerformance) +
     geom_boxplot(colour=I("white"), outlier.size=0, width=0.5) +
@@ -58,25 +58,41 @@ plotMeltedItemGroupPerformance <- function(migPerformance, selectedCnt = "F011",
 
   if (addText) 
     p <- p + 
-      geom_text(aes(y=Value, x=sItemGgroup, label=CNT), data = migPerformance[migPerformance$Centile > 99,], angle=90) +
-      geom_text(aes(y=Value, x=sItemGgroup, label=CNT), data = migPerformance[migPerformance$Centile < 1 + min(migPerformance$Centile),], angle=90)
+      geom_text(aes(y=Value, x=sItemGgroup, label=CNT), data = migPerformance[migPerformance$Centile > 99,], angle=0) +
+      geom_text(aes(y=Value, x=sItemGgroup, label=CNT), data = migPerformance[migPerformance$Centile < 1 + min(migPerformance$Centile),], angle=0)
   
   p
 }
 
-plotMeltedItemGroupInAreasPerformance <- function(migPerformance, selectedCnt = "F011") {
+plotMeltedItemGroupInAreasPerformance <- function(migPerformance, selectedCnt = "F011", addText = FALSE, addZero = TRUE) {
   require(ggplot2)
   if (!"tpos" %in% colnames(migPerformance)) migPerformance$tpos <- max(migPerformance$Value)
+  migPerformance$sGgroup <- as.numeric(factor(migPerformance$Group)) + 0.25
   
-  ggplot(aes(x=factor(Group), y=Value, fill=Area), data=migPerformance) + 
+  p <- ggplot(aes(x=factor(Group), y=Value, fill=Area), data=migPerformance) + 
     geom_boxplot(colour=I("white"), outlier.size=0, width=0.5) + 
-    stat_abline(intercept=0, slope=0, col="black", size=0.5, linetype="dotted") +
     geom_point(size=I(4), colour=I("grey"), shape=18) + 
-    geom_point(colour="red", size=9, data=migPerformance[migPerformance$Country == selectedCnt, ], shape=18) + 
-    geom_text(aes(y=tpos, label=CentileText), data=migPerformance[migPerformance$Country == selectedCnt, ]) + 
     theme_bw() + coord_flip() + xlab("") + ylab("") + 
     theme( legend.position = "none",
            text=element_text(size=15),
-           panel.border = element_blank()) 
+           panel.border = element_blank()) +
+    scale_color_manual(values=c("green3", "grey3", "red"))
+  
+  if (addZero)
+    p <- p +
+      stat_abline(intercept=0, slope=0, col="black", size=0.5, linetype="dotted") 
+  
+  if (!is.na(selectedCnt)) 
+    p <- p +
+      geom_point(colour="red", size=9, data=migPerformance[migPerformance$Country == selectedCnt, ], shape=18) + 
+      geom_text(aes(y=tpos, label=CentileText, colour=CentileColor), data=migPerformance[migPerformance$Country == selectedCnt, ])  
+    
+  if (addText) 
+    p <- p + 
+      geom_text(aes(y=Value, x=sGgroup, label=Country), data = migPerformance[migPerformance$Centile > 99,], angle=0) +
+      geom_text(aes(y=Value, x=sGgroup, label=Country), data = migPerformance[migPerformance$Centile < 1 + min(migPerformance$Centile),], angle=0)
+  
+  p
+  
   }
 
