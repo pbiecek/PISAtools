@@ -96,3 +96,21 @@ plotMeltedItemGroupInAreasPerformance <- function(migPerformance, selectedCnt = 
   
   }
 
+
+
+
+
+plotDifferentGroupPerformance <- function(migPerformance, selectedCnt = "F011") {
+  require(ggplot2)
+  ggplot(aes(x=Group2, y=Value, fill="grey"), data=migPerformance) +
+    geom_boxplot(colour=I("white"), fill=I("green4"), outlier.size=0, width=0.5) +
+    geom_point(size=I(4), colour=I("grey"), shape=18) +
+    theme_bw() + coord_flip() + xlab("") + ylab("") +
+    theme( legend.position = "none",
+           text=element_text(size=15),
+           panel.border = element_blank()) +
+    geom_point(colour="red", size=9, data=migPerformance[migPerformance$CNT == selectedCnt, ], shape=18) +
+    geom_text(aes(y=950, label=CentileText), data=migPerformance[migPerformance$CNT == selectedCnt, ]) + 
+    ylim(c(min(migPerformance$Value),1000))
+  
+}
