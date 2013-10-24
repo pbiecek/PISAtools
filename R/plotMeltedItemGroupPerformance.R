@@ -33,13 +33,13 @@ meltedItemGroupPerformance <- function(igPerformance) {
     res4
 }
 
-plotMeltedItemGroupPerformance <- function(migPerformance, selectedCnt = "F011", addText = FALSE, addZero = TRUE) {
+plotMeltedItemGroupPerformance <- function(migPerformance, selectedCnt = "F011", addText = FALSE, addZero = TRUE, boxwidth=0.75) {
   require(ggplot2)
   if (!"tpos" %in% colnames(migPerformance)) migPerformance$tpos <- max(migPerformance$Value)
   migPerformance$sItemGgroup <- as.numeric(factor(migPerformance$ItemGgroup)) + 0.25
   
   p <- ggplot(aes(x=ItemGgroup, y=Value, fill="grey"), data=migPerformance) +
-    geom_boxplot(colour=I("white"), outlier.size=0, width=0.5) +
+    geom_boxplot(colour=I("white"), outlier.size=0, width= boxwidth) +
     geom_point(size=I(4), colour=I("grey"), shape=18) +
     theme_bw() + coord_flip() + xlab("") + ylab("") +
     theme( legend.position = "none",
