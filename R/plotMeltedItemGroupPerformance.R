@@ -77,7 +77,7 @@ plotMeltedItemGroupInAreasPerformance <- function(migPerformance, selectedCnt = 
     })
   }
   p <- ggplot(aes(x=factor(Group), y=Value, fill=Area), data=migPerformance) + 
-    geom_boxplot(colour=I("white"), outlier.size=0, width=0.5) + 
+    geom_boxplot(colour=I("white"), outlier.size=0, width=1) + 
     geom_point(size=I(4), colour=I("grey"), shape=18) + 
     theme_bw() + coord_flip() + xlab("") + ylab("") + 
     theme( legend.position = "none",
