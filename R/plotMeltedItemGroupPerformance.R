@@ -64,7 +64,7 @@ plotMeltedItemGroupPerformance <- function(migPerformance, selectedCnt = "F011",
   p
 }
 
-plotMeltedItemGroupInAreasPerformance <- function(migPerformance, selectedCnt = "F011", addText = FALSE, addZero = TRUE, addTextCutoff=1) {
+plotMeltedItemGroupInAreasPerformance <- function(migPerformance, selectedCnt = "F011", addText = FALSE, addZero = TRUE, addTextCutoff=1, boxwidth=0.75) {
   require(ggplot2)
   if (!"tpos" %in% colnames(migPerformance)) migPerformance$tpos <- max(migPerformance$Value)
   migPerformance$sGgroup <- as.numeric(factor(migPerformance$Group)) + 0.25
@@ -77,7 +77,7 @@ plotMeltedItemGroupInAreasPerformance <- function(migPerformance, selectedCnt = 
     })
   }
   p <- ggplot(aes(x=factor(Group), y=Value, fill=Area), data=migPerformance) + 
-    geom_boxplot(colour=I("white"), outlier.size=0, width=1) + 
+    geom_boxplot(colour=I("white"), outlier.size=0, width=boxwidth) + 
     geom_point(size=I(4), colour=I("grey"), shape=18) + 
     theme_bw() + coord_flip() + xlab("") + ylab("") + 
     theme( legend.position = "none",
