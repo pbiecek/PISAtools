@@ -64,7 +64,7 @@ plotMeltedItemGroupPerformance <- function(migPerformance, selectedCnt = "F011",
   p
 }
 
-plotMeltedItemGroupInAreasPerformance <- function(migPerformance, selectedCnt = "F011", addText = FALSE, addZero = TRUE, addTextCutoff=1, boxwidth=0.75) {
+plotMeltedItemGroupInAreasPerformance <- function(migPerformance, selectedCnt = "F011", addText = FALSE, addZero = TRUE, addTextCutoff=1, boxwidth=0.75, angle90 = 0) {
   require(ggplot2)
   if (!"tpos" %in% colnames(migPerformance)) migPerformance$tpos <- max(migPerformance$Value)
   migPerformance$sGgroup <- as.numeric(factor(migPerformance$Group)) + 0.25
@@ -96,8 +96,8 @@ plotMeltedItemGroupInAreasPerformance <- function(migPerformance, selectedCnt = 
     
   if (addText) 
     p <- p + 
-      geom_text(aes(y=Value, x=sGgroup, label=Country), angle=90, data = migPerformance[migPerformance$CentileRankBottom <= addTextCutoff,]) +
-      geom_text(aes(y=Value, x=sGgroup, label=Country), angle=90, data = migPerformance[migPerformance$CentileRankTop <= addTextCutoff,])
+      geom_text(aes(y=Value, x=sGgroup, label=Country), angle=angle90, data = migPerformance[migPerformance$CentileRankBottom <= addTextCutoff,]) +
+      geom_text(aes(y=Value, x=sGgroup, label=Country), angle=angle90, data = migPerformance[migPerformance$CentileRankTop <= addTextCutoff,])
   
   p
   
@@ -107,10 +107,10 @@ plotMeltedItemGroupInAreasPerformance <- function(migPerformance, selectedCnt = 
 
 
 
-plotDifferentGroupPerformance <- function(migPerformance, selectedCnt = "F011") {
+plotDifferentGroupPerformance <- function(migPerformance, selectedCnt = "F011", boxwidth=0.75) {
   require(ggplot2)
   ggplot(aes(x=Group2, y=Value, fill="grey"), data=migPerformance) +
-    geom_boxplot(colour=I("white"), fill=I("green4"), outlier.size=0, width=0.5) +
+    geom_boxplot(colour=I("white"), fill=I("green4"), outlier.size=0, width=boxwidth) +
     geom_point(size=I(4), colour=I("grey"), shape=18) +
     theme_bw() + coord_flip() + xlab("") + ylab("") +
     theme( legend.position = "none",
