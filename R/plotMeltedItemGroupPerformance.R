@@ -64,11 +64,18 @@ plotMeltedItemGroupPerformance <- function(migPerformance, selectedCnt = "F011",
   p
 }
 
-plotMeltedItemGroupInAreasPerformance <- function(migPerformance, selectedCnt = "F011", addText = FALSE, addZero = TRUE) {
+plotMeltedItemGroupInAreasPerformance <- function(migPerformance, selectedCnt = "F011", addText = FALSE, addZero = TRUE, addTextCutoff=1) {
   require(ggplot2)
   if (!"tpos" %in% colnames(migPerformance)) migPerformance$tpos <- max(migPerformance$Value)
   migPerformance$sGgroup <- as.numeric(factor(migPerformance$Group)) + 0.25
-  
+  if (addText) {
+    migPerformance$CentileRankTop <- sapply(1:nrow(migPerformance), function(i) {
+      sum(migPerformance$Group == migPerformance$Group[i] & migPerformance$Centile >= migPerformance$Centile[i])
+    })
+    migPerformance$CentileRankBottom <- sapply(1:nrow(migPerformance), function(i) {
+      sum(migPerformance$Group == migPerformance$Group[i] & migPerformance$Centile <= migPerformance$Centile[i])
+    })
+  }
   p <- ggplot(aes(x=factor(Group), y=Value, fill=Area), data=migPerformance) + 
     geom_boxplot(colour=I("white"), outlier.size=0, width=0.5) + 
     geom_point(size=I(4), colour=I("grey"), shape=18) + 
@@ -89,8 +96,8 @@ plotMeltedItemGroupInAreasPerformance <- function(migPerformance, selectedCnt = 
     
   if (addText) 
     p <- p + 
-      geom_text(aes(y=Value, x=sGgroup, label=Country), data = migPerformance[migPerformance$Centile > 99,], angle=0) +
-      geom_text(aes(y=Value, x=sGgroup, label=Country), data = migPerformance[migPerformance$Centile < 1 + min(migPerformance$Centile),], angle=0)
+      geom_text(aes(y=Value, x=sGgroup, label=Country), angle=90, data = migPerformance[migPerformance$CentileRankBottom <= addTextCutoff,]) +
+      geom_text(aes(y=Value, x=sGgroup, label=Country), angle=90, data = migPerformance[migPerformance$CentileRankTop <= addTextCutoff,])
   
   p
   
