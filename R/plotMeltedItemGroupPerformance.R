@@ -17,15 +17,25 @@ itemGroupPerformance <- function(itemPerformance, itemClassification, allItemsNa
     aAverages
 }
 
-meltedItemGroupPerformance <- function(igPerformance) {
+meltedItemGroupPerformance <- function(igPerformance, presentPercents = FALSE) {
     require(reshape2)
     res4 <- na.omit(melt(igPerformance))
     res4$mean <- round(100*
-    sapply(1:nrow(res4), function(i) 
-         sum(res4[i,"value"] > res4[as.character(res4$Var1) == as.character(res4$Var1)[i] ,"value"], na.rm=TRUE) /
-             (sum(!is.na(res4[as.character(res4$Var1) == as.character(res4$Var1)[i] ,"value"])) - 1)
-           ))
-    res4$text <- paste0(res4$mean, "%")
+                         sapply(1:nrow(res4), function(i) 
+                           sum(res4[i,"value"] > res4[as.character(res4$Var1) == as.character(res4$Var1)[i] ,"value"], na.rm=TRUE) /
+                                  (sum(!is.na(res4[as.character(res4$Var1) == as.character(res4$Var1)[i] ,"value"])) - 1)
+                         ))
+    if (presentPercents) {
+      res4$text <- paste0(res4$mean, "%")
+    } else {
+      res4$text <- sapply(1:nrow(res4), function(i) 
+                              paste0(
+                                sum(res4[i,"value"] <= res4[as.character(res4$Var1) == as.character(res4$Var1)[i] ,"value"], na.rm=TRUE),
+                                "/",
+                                sum(as.character(res4$Var1) == as.character(res4$Var1)[i])
+                              )
+                           ) 
+    }
     res4$kol <-  sapply(1:nrow(res4), function(i) {
         maxi <- max(res4[ res4[,"Var2"] == res4[i,"Var2"] ,"mean"], na.rm=TRUE)
         mini <- min(res4[ res4[,"Var2"] == res4[i,"Var2"] ,"mean"], na.rm=TRUE)
