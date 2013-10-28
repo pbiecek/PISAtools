@@ -1,7 +1,11 @@
 
-itemGroupPerformance <- function(itemPerformance, itemClassification, allItemsName = " Average Improvement Across All Items") {
+itemGroupPerformance <- function(itemPerformance, itemClassification, allItemsName = " Average Improvement Across All Items", addParentheses = TRUE) {
     nitems <- tapply(itemPerformance[,1], itemClassification, function(x) length(na.omit(x)))
-    gItemNames <- paste0(names(nitems), " (", nitems, ")")
+    if (addParentheses) {
+      gItemNames <- paste0(names(nitems), " (", nitems, ")")
+    } else {
+      gItemNames <- paste0(names(nitems))
+    }
     
     gAverages <- apply(itemPerformance, 2, function(x)
     tapply(x, itemClassification, mean, na.rm=TRUE)
