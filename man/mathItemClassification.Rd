@@ -10,13 +10,13 @@
 \docType{data}
 \title{Various classification of Math, Reading, Science, Financial Items}
 \description{
- The oroginal and the ,,extended'' classification of math items.
+ The official classifications for computer and paper, math reading finance and problem solving items.
 
- Each item is classified into a set of different scales.
-  
- "Content Area" "Overarching idea" "Competency clusters" "Item Format" "Thinking across multiple representations" "Probabilistic reasoning" "Statistics" "Rates Ratios Proportions" "Measurement" "Using a graph chart or table" "Using multiple graphs" "Spatial reasoning" "Conceptual understanding vs procedural knowledge" "Argument explanation" "Systematic sequential strategic" "Studying Examples" "Thinking through a multi step solution process" "Employing conceptual understanding reasoning" "Using reverse thinking flexible thinking" "Making sense of non routine situations" 
+ Difference domains have different classifications.
+
+ The common one is the item format.
 }
-\usage{data(mathItemClassification)}
+\usage{data(computerMathClassification)}
 \author{
  Dataset created by OECD, transformed by Przemyslaw Biecek
 }
