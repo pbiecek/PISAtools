@@ -12,7 +12,7 @@
 \description{
  The official classifications for computer and paper, math reading finance and problem solving items.
 
- Difference domains have different classifications.
+ Different domains have different classifications.
 
  The common one is the item format.
 }
