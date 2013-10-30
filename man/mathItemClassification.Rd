@@ -8,7 +8,7 @@
 \alias{paperScienceClassification}
 
 \docType{data}
-\title{Various classification of Math, Reading, Science, Financial Items}
+\title{Various classifications of Math, Reading, Science, Financial Items}
 \description{
  The official classifications for computer and paper, math reading finance and problem solving items.
 
