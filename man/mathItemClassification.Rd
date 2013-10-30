@@ -1,7 +1,14 @@
-\name{mathItemClassification}
-\alias{mathItemClassification}
+\name{computerMathClassification}
+\alias{computerMathClassification}
+\alias{computerProblemSolvingClassification}
+\alias{computerReadingClassification}
+\alias{paperFinanceClassification}
+\alias{paperMathClassification}
+\alias{paperReadingClassification}
+\alias{paperScienceClassification}
+
 \docType{data}
-\title{Classification of Math items}
+\title{Various classification of Math, Reading, Science, Financial Items}
 \description{
  The oroginal and the ,,extended'' classification of math items.
 
