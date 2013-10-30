@@ -20,8 +20,13 @@
 \author{
  Dataset created by OECD, transformed by Przemyslaw Biecek
 }
-\seealso{\code{\link{student2009}}}
 \examples{
-head(mathItemClassification)
+head(computerMathClassification)
+head(computerProblemSolvingClassification)
+head(computerReadingClassification)
+head(paperFinanceClassification)
+head(paperMathClassification)
+head(paperReadingClassification)
+head(paperScienceClassification)
 }
 \keyword{datasets}
