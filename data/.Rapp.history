@@ -1,0 +1,5 @@
+load("/Users/pbiecek/camtasia/GitHub/PISAtools/data/mathItemClassification.rda")
+load("/Users/pbiecek/camtasia/GitHub/PISAtools/data/problemItemClassification.rda")
+ls()
+head(mathItemClassification)
+head(problemItemClassification)
