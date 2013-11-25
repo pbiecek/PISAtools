@@ -78,8 +78,7 @@ plotMeltedItemGroupPerformance <- function(migPerformance, selectedCnt = "F011",
     theme_bw() + coord_flip() + xlab("") + ylab("") +
     theme( legend.position = "none",
            text=element_text(size=15),
-           panel.border = element_blank()) #+ 
-  # scale_color_manual(values=c("green3", "grey3", "red"))
+           panel.border = element_blank()) 
   
   if (addZero)
     p <- p +
@@ -88,7 +87,8 @@ plotMeltedItemGroupPerformance <- function(migPerformance, selectedCnt = "F011",
   if (!is.na(selectedCnt)) 
     p <- p +
       geom_point(colour="red", size=9, data=migPerformance[migPerformance$CNT == selectedCnt, ], shape=18) +
-      geom_text(aes(y=tpos, label=CentileText, colour=I(CentileColor)), data=migPerformance[migPerformance$CNT == selectedCnt, ])
+      geom_text(aes(y=tpos, label=CentileText, colour=CentileColor), data=migPerformance[migPerformance$CNT == selectedCnt, ])+#+ 
+     scale_color_manual(values=levels(migPerformance[migPerformance$CNT == selectedCnt, "CentileColor"])))
 
   if (addText) 
     p <- p + 
