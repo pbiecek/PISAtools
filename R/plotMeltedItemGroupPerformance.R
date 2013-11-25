@@ -32,7 +32,7 @@ itemGroupPerformance <- function(itemPerformance, itemClassification, allItemsNa
           "/",
           sum(as.character(res4$Var1) == as.character(res4$Var1)[i]),
           "  (",
-          res4$mean, "%)"
+          res4$mean[i], "%)"
         )
       ) 
     } else {
