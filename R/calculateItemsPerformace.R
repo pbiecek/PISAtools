@@ -10,7 +10,7 @@ calculateItemsPerformace <- function(itemNames, dataset, naLevels = c("7", "8"),
       }
       
       if (length(naLevels) > 0)       
-          item[which(item %in% naLevels[j])] <- NA
+          item[which(item %in% naLevels)] <- NA
       
 #      for (j in seq_along(naLevels)) {
 #            item[which(item == naLevels[j])] <- NA
