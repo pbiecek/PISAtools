@@ -3,3 +3,7 @@ load("/Users/pbiecek/camtasia/GitHub/PISAtools/data/problemItemClassification.rd
 ls()
 head(mathItemClassification)
 head(problemItemClassification)
+load("/Users/pbiecek/camtasia/GitHub/PISAtools/data/paperReadingClassification.rda")
+paperReadingClassification
+dim(paperReadingClassification)
+0144...................
