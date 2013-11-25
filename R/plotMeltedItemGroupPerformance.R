@@ -50,16 +50,16 @@ itemGroupPerformance <- function(itemPerformance, itemClassification, allItemsNa
     }
     res4$kol <-  sapply(1:nrow(res4), function(i) {
       if (!is.na(maxCutOff)) {
-        if (res4[i,"mean"]  >= maxCutOff) return("green")
+        if (res4[i,"mean"]  >= maxCutOff) return("green4")
       }else {
         maxi <- max(res4[ res4[,"Var2"] == res4[i,"Var2"] ,"mean"], na.rm=TRUE)
-        if (res4[i,"mean"]  == maxi) return("green")
+        if (res4[i,"mean"]  == maxi) return("green4")
       }
       if (!is.na(minCutOff)) {
-        if (res4[i,"mean"]  <= minCutOff) return("red")
+        if (res4[i,"mean"]  <= minCutOff) return("red4")
       }else {
         mini <- min(res4[ res4[,"Var2"] == res4[i,"Var2"] ,"mean"], na.rm=TRUE)
-        if (res4[i,"mean"]  == mini) return("red")
+        if (res4[i,"mean"]  == mini) return("red4")
       }
         "grey"
     })
