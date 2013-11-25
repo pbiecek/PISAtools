@@ -17,7 +17,7 @@ itemGroupPerformance <- function(itemPerformance, itemClassification, allItemsNa
     aAverages
 }
 
-meltedItemGroupPerformance <- function(igPerformance, presentPercents = FALSE) {
+ meltedItemGroupPerformance <- function(igPerformance, presentPercents = FALSE, minCutOff = NA, maxCutOff = NA) {
     require(reshape2)
     res4 <- na.omit(melt(igPerformance))
     res4$mean <- round(100*
@@ -25,22 +25,42 @@ meltedItemGroupPerformance <- function(igPerformance, presentPercents = FALSE) {
                            sum(res4[i,"value"] > res4[as.character(res4$Var1) == as.character(res4$Var1)[i] ,"value"], na.rm=TRUE) /
                                   (sum(!is.na(res4[as.character(res4$Var1) == as.character(res4$Var1)[i] ,"value"])) - 1)
                          ))
-    if (presentPercents) {
-      res4$text <- paste0(res4$mean, "%")
-    } else {
+    if (is.na(presentPercents)) {
       res4$text <- sapply(1:nrow(res4), function(i) 
-                              paste0(
-                                sum(res4[i,"value"] <= res4[as.character(res4$Var1) == as.character(res4$Var1)[i] ,"value"], na.rm=TRUE),
-                                "/",
-                                sum(as.character(res4$Var1) == as.character(res4$Var1)[i])
-                              )
-                           ) 
+        paste0(
+          sum(res4[i,"value"] <= res4[as.character(res4$Var1) == as.character(res4$Var1)[i] ,"value"], na.rm=TRUE),
+          "/",
+          sum(as.character(res4$Var1) == as.character(res4$Var1)[i]),
+          "  (",
+          res4$mean, "%)"
+        )
+      ) 
+    } else {
+      if (presentPercents) {
+        res4$text <- paste0(res4$mean, "%")
+      } else {
+        res4$text <- sapply(1:nrow(res4), function(i) 
+          paste0(
+            sum(res4[i,"value"] <= res4[as.character(res4$Var1) == as.character(res4$Var1)[i] ,"value"], na.rm=TRUE),
+            "/",
+            sum(as.character(res4$Var1) == as.character(res4$Var1)[i])
+          )
+        ) 
+      }
     }
     res4$kol <-  sapply(1:nrow(res4), function(i) {
+      if (!is.na(maxCutOff)) {
+        if (res4[i,"mean"]  >= maxCutOff) return("green")
+      }else {
         maxi <- max(res4[ res4[,"Var2"] == res4[i,"Var2"] ,"mean"], na.rm=TRUE)
-        mini <- min(res4[ res4[,"Var2"] == res4[i,"Var2"] ,"mean"], na.rm=TRUE)
         if (res4[i,"mean"]  == maxi) return("green")
+      }
+      if (!is.na(minCutOff)) {
+        if (res4[i,"mean"]  <= minCutOff) return("red")
+      }else {
+        mini <- min(res4[ res4[,"Var2"] == res4[i,"Var2"] ,"mean"], na.rm=TRUE)
         if (res4[i,"mean"]  == mini) return("red")
+      }
         "grey"
     })
     colnames(res4) <- c("ItemGgroup", "CNT", "Value", "Centile", "CentileText", "CentileColor")
