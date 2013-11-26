@@ -17,7 +17,8 @@ itemGroupPerformance <- function(itemPerformance, itemClassification,
           indy <- which(is.na(itemPerformance[inds,cn]))
           if (sum(!is.na(itemPerformance[inds,cn])) > 2) {
             coef <- lm(qnorm(itemPerformance[inds,cn]/perMileFactor) ~ qnorm(rm/perMileFactor))$coef
-            itemPerformance[inds[indy],cn] <- pnorm(coef[1] + coef[2]*qnorm(rm[indy]/perMileFactor))*perMileFactor
+            proposals <- pnorm(coef[1] + coef[2]*qnorm(rm[indy]/perMileFactor))*perMileFactor
+            itemPerformance[inds[indy],cn] <- proposals
           }
         }
       }
