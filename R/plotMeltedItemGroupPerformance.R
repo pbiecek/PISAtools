@@ -9,12 +9,17 @@ itemGroupPerformance <- function(itemPerformance, itemClassification,
       gItemNames <- paste0(names(nitems))
     }
     # impute missing data
-    rm <- rowMeans(itemPerformance, na.rm=TRUE)
-    for (cn in 1:ncol(itemPerformance)) {
-      if (any(is.na(itemPerformance[,cn]))) {
-        indy <- which(is.na(itemPerformance[,cn]))
-        coef <- lm(qnorm(itemPerformance[,cn]/perMileFactor) ~ qnorm(rm/perMileFactor))$coef
-        itemPerformance[indy,cn] <- pnorm(coef[1] + coef[2]*qnorm(rm[indy]/perMileFactor))*perMileFactor
+    for (ic in unique(itemClassification)) {
+      inds <- which(itemClassification == ic)
+      rm <- rowMeans(itemPerformance[inds,], na.rm=TRUE)
+      for (cn in 1:ncol(itemPerformance)) {
+        if (any(is.na(itemPerformance[inds,cn]))) {
+          indy <- which(is.na(itemPerformance[inds,cn]))
+          if (sum(!is.na(itemPerformance[inds,cn])) > 2) {
+            coef <- lm(qnorm(itemPerformance[inds,cn]/perMileFactor) ~ qnorm(rm/perMileFactor))$coef
+            itemPerformance[inds[indy],cn] <- pnorm(coef[1] + coef[2]*qnorm(rm[indy]/perMileFactor))*perMileFactor
+          }
+        }
       }
     }
     
