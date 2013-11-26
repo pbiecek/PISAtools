@@ -36,7 +36,8 @@ itemGroupPerformance <- function(itemPerformance, itemClassification,
 
  meltedItemGroupPerformance <- function(igPerformance, presentPercents = FALSE, minCutOff = NA, maxCutOff = NA) {
     require(reshape2)
-    res4 <- na.omit(melt(igPerformance))
+#    res4 <- na.omit(melt(igPerformance))
+    res4 <- melt(igPerformance)
     res4$mean <- round(100*
                          sapply(1:nrow(res4), function(i) 
                            sum(res4[i,"value"] > res4[as.character(res4$Var1) == as.character(res4$Var1)[i] ,"value"], na.rm=TRUE) /
