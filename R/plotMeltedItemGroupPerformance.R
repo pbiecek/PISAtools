@@ -11,12 +11,12 @@ itemGroupPerformance <- function(itemPerformance, itemClassification,
     # impute missing data
     for (ic in unique(itemClassification)) {
       inds <- which(itemClassification == ic)
-      rm <- rowMeans(itemPerformance[inds,], na.rm=TRUE)
+      rm <- rowMeans(itemPerformance[inds,, drop=FALSE], na.rm=TRUE)
       for (cn in 1:ncol(itemPerformance)) {
-        if (any(is.na(itemPerformance[inds,cn]))) {
-          indy <- which(is.na(itemPerformance[inds,cn]))
-          if (sum(!is.na(itemPerformance[inds,cn])) > 2) {
-            coef <- lm(qnorm(itemPerformance[inds,cn]/perMileFactor) ~ qnorm(rm/perMileFactor))$coef
+        if (any(is.na(itemPerformance[inds,cn, drop=FALSE]))) {
+          indy <- which(is.na(itemPerformance[inds,cn, drop=FALSE]))
+          if (sum(!is.na(itemPerformance[inds,cn, drop=FALSE])) > 2) {
+            coef <- lm(qnorm(itemPerformance[inds,cn, drop=FALSE]/perMileFactor) ~ qnorm(rm/perMileFactor))$coef
             proposals <- pnorm(coef[1] + coef[2]*qnorm(rm[indy]/perMileFactor))*perMileFactor
             itemPerformance[inds[indy],cn] <- proposals
           }
