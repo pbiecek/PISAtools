@@ -1,16 +1,27 @@
 
-itemGroupPerformance <- function(itemPerformance, itemClassification, allItemsName = " Average Improvement Across All Items", addParentheses = TRUE) {
-    nitems <- tapply(itemPerformance[,1], itemClassification, function(x) length(na.omit(x)))
+itemGroupPerformance <- function(itemPerformance, itemClassification, 
+                                 allItemsName = " Average Improvement Across All Items", addParentheses = TRUE,
+                                 perMileFactor = 1000) {
+    nitems <- tapply(itemPerformance[,1], itemClassification, function(x) length(x))
     if (addParentheses) {
       gItemNames <- paste0(names(nitems), " (", nitems, ")")
     } else {
       gItemNames <- paste0(names(nitems))
     }
+    # impute missing data
+    rm <- rowMeans(itemPerformance, na.rm=TRUE)
+    for (cn in 1:ncol(itemPerformance)) {
+      if (any(is.na(itemPerformance[,cn]))) {
+        indy <- which(is.na(itemPerformance[,cn]))
+        coef <- lm(qnorm(itemPerformance[,cn]/perMileFactor) ~ qnorm(rm/perMileFactor))$coef
+        itemPerformance[indy,cn] <- pnorm(coef[1] + coef[2]*qnorm(rm[indy]/perMileFactor))*perMileFactor
+      }
+    }
     
     gAverages <- apply(itemPerformance, 2, function(x)
-    tapply(x, itemClassification, mean, na.rm=TRUE)
+      tapply(x, itemClassification, function(x) pnorm(mean(qnorm(x/perMileFactor), na.rm=TRUE))*perMileFactor)
     )
-    averages <- apply(itemPerformance, 2, mean, na.rm=TRUE)
+    averages <- apply(itemPerformance, 2, function(x) pnorm(mean(qnorm(x/perMileFactor), na.rm=TRUE))*perMileFactor)
     aAverages <- rbind(averages, gAverages)
     rownames(aAverages) <- c(allItemsName ,gItemNames)
     
