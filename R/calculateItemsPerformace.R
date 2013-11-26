@@ -16,7 +16,8 @@ calculateItemsPerformace <- function(itemNames, dataset, naLevels = c("7", "8"),
 #            item[which(item == naLevels[j])] <- NA
 #        }
         
-        maxAns  <- item == as.character(max(as.numeric(as.character(item)), na.rm=TRUE))
+        mitem <- gsub(as.character(item),pattern="Score ", replacement="")
+        maxAns  <- mitem == as.character(max(as.numeric(mitem), na.rm=TRUE))
         performance <- prop.table(unclass(by(dataset[,weightVal], list(dataset[,cntVal],  maxAns), base::sum, na.rm=TRUE)), 1)
         
         res[i,] <-  round(performance[,2] * 100,1)
