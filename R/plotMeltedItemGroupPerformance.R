@@ -9,6 +9,7 @@ itemGroupPerformance <- function(itemPerformance, itemClassification,
       gItemNames <- paste0(names(nitems))
     }
     # impute missing data
+    # separately for each group of items
     for (ic in unique(itemClassification)) {
       inds <- which(itemClassification == ic)
       rm <- rowMeans(itemPerformance[inds,, drop=FALSE], na.rm=TRUE)
