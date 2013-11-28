@@ -7,3 +7,9 @@ load("/Users/pbiecek/camtasia/GitHub/PISAtools/data/paperReadingClassification.r
 paperReadingClassification
 dim(paperReadingClassification)
 0144...................
+load("/Users/pbiecek/camtasia/GitHub/PISAtools/data/paperMathClassification.rda")
+ls()
+head(paperMathClassification)
+load("/Users/pbiecek/camtasia/GitHub/PISAtools/data/paperScienceClassification.rda")
+ls()
+head(paperScienceClassification)
