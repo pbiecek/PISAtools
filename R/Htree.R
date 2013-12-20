@@ -27,8 +27,8 @@ plotSlopeHtree <- function(val1, val2, lab1, lab2, col1="black", col2="black",
   
   ggplot(data = flatHtree, aes(x = cnt, y = avg, group=lab, color=color)) + 
     geom_line(aes(size=level)) + 
-    scale_size_continuous(range=c(1,3)) + 
-    geom_text(aes(label = lab, x=cnt*1.4 - 0.2 , hjust = 1-cnt), size=3) +
+    scale_size_continuous(range=c(0.5,2)) + 
+    geom_text(aes(label = lab, x=cnt*1.4 - 0.2 , hjust = 1-cnt), size=4) +
     theme_bw()+
     scale_color_brewer(palette = "RdYlBu") + 
     scale_x_continuous("", limits = c(-3,4)) + 
