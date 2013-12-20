@@ -42,17 +42,20 @@ plotSlopeHtree <- function(val1, val2, gr1, gr2, lab1, lab2, col1="black", col2=
   
 }
 
-getHFlatAverages <- function(Htree, vname, cname, level=0) {
+getHFlatAverages <- function(Htree, vname, cname, CI = NULL, level=0) {
   inds <- which(sapply(Htree, class) == "Hgroup")
   pre <- NULL
   if (length(inds) > 0) {
     pre <- do.call(rbind, 
-                   lapply(inds, function(x) getHFlatAverages(Htree[[x]], vname, cname, level+1))
+                   lapply(inds, function(x) getHFlatAverages(Htree[[x]], vname, cname, CI=CI, level+1))
     )
   }
   if (!any(is.na(c(Htree[[vname]]["average"], Htree[cname])))) {
+    CIs <- NULL
+    if (!is.null(CI))
+      CIs <- quantile(Htree[[vname]][["replicates"]], c(1-CI, 1+CI)/2, na.rm=TRUE)
     pre <- rbind(pre,
-                 as.data.frame(c(level=level, Htree[[vname]]["average"], Htree[cname])))
+                 as.data.frame(c(level=level, Htree[[vname]]["average"], Htree[cname], CIs)))
   }
   pre
 }
