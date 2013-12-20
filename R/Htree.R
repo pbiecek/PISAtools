@@ -19,16 +19,16 @@ plotFlatHtree <- function(flatHtree, x, y, size, label, color, range) {
     )
 }
 
-plotSlopeHtree <- function(val1, val2, lab1, lab2, col1="black", col2="black", 
+plotSlopeHtree <- function(val1, val2, gr1, gr2, lab1, lab2, col1="black", col2="black", 
                            lev1=1, lev2=1, rang=range(c(val1, val2), na.rm=TRUE)) {
   flatHtree <- rbind(
-              data.frame(cnt = 0, avg = val1, lab= lab1, color=col1, level=lev1),
-              data.frame(cnt = 1, avg = val2, lab= lab2, color=col2, level=lev2))
+              data.frame(cnt = 0, avg = val1, lab= lab1, color=col1, level=lev1, gr=gr1),
+              data.frame(cnt = 1, avg = val2, lab= lab2, color=col2, level=lev2, gr=gr2))
   
-  ggplot(data = flatHtree, aes(x = cnt, y = avg, group=lab, color=color)) + 
-    geom_line(aes(size=level)) + 
-    geom_text(aes(label = lab, x=cnt*1.4 - 0.2 , hjust = 1-cnt, size=level)) + #, size=4
-    scale_size_continuous(range=c(1,3)) + 
+  ggplot(data = flatHtree, aes(x = cnt, y = avg, group=gr, color=color)) + 
+    geom_line() +
+    geom_text(aes(label = lab, x=cnt*1.4 - 0.2 , hjust = 1-cnt, size=level)) + 
+    scale_size_continuous(range=c(3,7)) + 
     theme_bw()+
     scale_color_brewer(palette = "RdYlBu") + 
     scale_x_continuous("", limits = c(-3,4)) + 
