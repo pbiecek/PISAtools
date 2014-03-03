@@ -1,5 +1,9 @@
-calculateCoeffs.polr <- function(model, datas, method="probit", weigths = NULL, fweigth) {
-  mres <- polr(model, datas, weights=datas[,fweigth], method=method)
+calculateCoeffs.polr <- function(model, datas, method="probit", weigths = NULL, fweigth, starts = NULL) {
+  if (is.null(starts)) {
+    mres <- polr(model, datas, weights=datas[,fweigth], method=method)
+  } else {
+    mres <- polr(model, datas, weights=datas[,fweigth], method=method, start=starts)
+  }
   starters <- c(mres$coefficients, mres$zeta)
   
   if (is.null(weigths)) {
