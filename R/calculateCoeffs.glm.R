@@ -1,8 +1,8 @@
-calculateCoeffs.glm <- function(model, datas, method="probit", weigths = NULL, fweigth, starts = NULL) {
+calculateCoeffs.glm <- function(model, datas, weigths = NULL, fweigth, starts = NULL) {
   if (is.null(starts)) {
-    mres <- glm(model, datas, weights=datas[,fweigth], method=method)
+    mres <- glm(model, datas, weights=datas[,fweigth], family="binomial", method=method)
   } else {
-    mres <- glm(model, datas, weights=datas[,fweigth], method=method, start=starts)
+    mres <- glm(model, datas, weights=datas[,fweigth], family="binomial", start=starts)
   }
   starters <- mres$coefficients
   
@@ -12,7 +12,7 @@ calculateCoeffs.glm <- function(model, datas, method="probit", weigths = NULL, f
   } else {
     mresAll <- sapply(seq_along(weigths), function (i) {
       datas$wei <- datas[,weigths[i]]
-      mresW <- polr(model, datas, weights=wei, method=method)
+      mresW <- glm(model, datas, weights=wei, method=method, family="binomial")
       smresW$coefficients
     })
     se <- sqrt(rowMeans((mresAll - starters)^2))/sqrt(length(weigths))
