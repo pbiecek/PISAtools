@@ -1,9 +1,5 @@
-calculateCoeffs.glm <- function(model, datas, weigths = NULL, fweigth, starts = NULL) {
-  if (is.null(starts)) {
-    mres <- glm(model, datas, weights=datas[,fweigth], family="binomial", method=method)
-  } else {
-    mres <- glm(model, datas, weights=datas[,fweigth], family="binomial", start=starts)
-  }
+calculateCoeffs.glm <- function(model, datas, weigths = NULL, fweigth) {
+  mres <- glm(model, datas, weights=datas[,fweigth], family="binomial")
   starters <- mres$coefficients
   
   if (is.null(weigths)) {
