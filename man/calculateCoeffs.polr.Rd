@@ -13,6 +13,13 @@
  Przemyslaw Biecek
 }
 \examples{
+  weigths <- paste0("SPFWT",1:80)
+  fweigth <- "SPFWT0"
+  datas <- na.omit(pol[,c("I_Q06A", "PVLIT1", "PVNUM1", "GENDER_R", "AGE_R", "PARED", "EDCAT4", fweigth, weigths)])
+  model <- I_Q06A ~ PVLIT1 + PVNUM1 + GENDER_R + AGE_R + PARED + EDCAT4
   
+  calculateCoeffs.polr(model, datas, method="probit", weigths, fweigth) 
+  
+s
 }
 \keyword{datasets}
