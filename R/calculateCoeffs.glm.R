@@ -12,7 +12,7 @@ calculateCoeffs.glm <- function(model, datas, weigths = NULL, fweigth, starts = 
   } else {
     mresAll <- sapply(seq_along(weigths), function (i) {
       datas$wei <- datas[,weigths[i]]
-      mresW <- glm(model, datas, weights=wei, method=method, family="binomial")
+      mresW <- glm(model, datas, weights=wei, family="binomial")
       smresW$coefficients
     })
     se <- sqrt(rowMeans((mresAll - starters)^2))/sqrt(length(weigths))
