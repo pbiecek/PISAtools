@@ -1,3 +1,33 @@
+plotGroupPerformance <- function(df, x, y, cnt, selectedCnt = NA, addZero=FALSE) {
+  if (is.null(df$tpos)) {
+    df$tpos <- max(df[,y], na.rm=TRUE)
+  }
+  if (is.null(df$CentileText) & !is.na(selectedCnt)) {
+    df$tpos <- max(df[,y], na.rm=TRUE)
+  }
+  
+
+  p <- ggplot(aes_string(x=x, y=y), data=df) +
+    geom_boxplot(colour=I("white"), outlier.size=0, width= 0.5,fill="lightgrey") +
+    geom_point(size=I(4), colour=I("grey"), shape=18) +
+    theme_bw() + coord_flip() + xlab("") + ylab("") +
+    theme( legend.position = "none",
+           text=element_text(size=15),
+           panel.border = element_blank()) 
+  
+  if (addZero)
+    p <- p +
+    stat_abline(intercept=0, slope=0, col="black", size=0.5, linetype="dotted") 
+  
+  if (!is.na(selectedCnt)) 
+    p <- p +
+    geom_point(colour="red", size=9, data=df[df[,cnt] == selectedCnt, ], shape=18) +
+    geom_text(aes(y=tpos, label=CentileText), data=df[df[,cnt] == selectedCnt, ]) 
+  
+  p
+  
+}
+
 
 itemGroupPerformance <- function(itemPerformance, itemClassification, 
                                  allItemsName = " Average Improvement Across All Items", addParentheses = TRUE,
