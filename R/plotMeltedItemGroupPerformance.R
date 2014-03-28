@@ -1,11 +1,11 @@
 plotGroupPerformance <- function(df, x, y, cnt, selectedCnt = NA, addZero=FALSE) {
   if (is.null(df$tpos)) {
-    df$tpos <- 1.2*max(df[,y], na.rm=TRUE)
+    df$tpos <- 1.3*max(df[,y], na.rm=TRUE)
   }
   if (is.null(df$CentileText) & !is.na(selectedCnt)) {
     df$CentileText = ""
     for (i in 1:nrow(df))
-      df$CentileText[i] <- paste( sum(df[,x] == df[i,x] & df[,y] >= df[i,y]), "/", sum(df[,x] == df[i,x]), sep="")
+      df$CentileText[i] <- paste( sum(df[,x] == df[i,x] & df[,y] >= df[i,y], na.rm=TRUE), "/", sum(df[,x] == df[i,x], na.rm=TRUE), sep="")
   }
 
   p <- ggplot(aes_string(x=x, y=y), data=df) +
@@ -23,7 +23,7 @@ plotGroupPerformance <- function(df, x, y, cnt, selectedCnt = NA, addZero=FALSE)
   if (!is.na(selectedCnt)) 
     p <- p +
     geom_point(colour="red", size=9, data=df[df[,cnt] == selectedCnt, ], shape=18) +
-    geom_text(aes(y=tpos, label=CentileText), data=df[df[,cnt] == selectedCnt, ], vjust=1) 
+    geom_text(aes(y=tpos, label=CentileText), data=df[df[,cnt] == selectedCnt, ], hjust=1) 
   
   p
 }
