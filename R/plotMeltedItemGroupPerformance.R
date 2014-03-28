@@ -1,11 +1,12 @@
 plotGroupPerformance <- function(df, x, y, cnt, selectedCnt = NA, addZero=FALSE) {
   if (is.null(df$tpos)) {
-    df$tpos <- max(df[,y], na.rm=TRUE)
+    df$tpos <- 1.1*max(df[,y], na.rm=TRUE)
   }
   if (is.null(df$CentileText) & !is.na(selectedCnt)) {
-    df$tpos <- max(df[,y], na.rm=TRUE)
+    df$CentileText = ""
+    for (i in 1:nrow(df))
+      df$CentileText[i] <- paste( sum(df[,x] == df[i,x] & df[,y] >= df[i,y]), "/", sum(df[,x] == df[i,x]), sep="")
   }
-  
 
   p <- ggplot(aes_string(x=x, y=y), data=df) +
     geom_boxplot(colour=I("white"), outlier.size=0, width= 0.5,fill="lightgrey") +
@@ -25,7 +26,6 @@ plotGroupPerformance <- function(df, x, y, cnt, selectedCnt = NA, addZero=FALSE)
     geom_text(aes(y=tpos, label=CentileText), data=df[df[,cnt] == selectedCnt, ]) 
   
   p
-  
 }
 
 
