@@ -1,6 +1,6 @@
 plotGroupPerformance <- function(df, x, y, cnt, selectedCnt = NA, addZero=FALSE) {
   if (is.null(df$tpos)) {
-    df$tpos <- 1.1*max(df[,y], na.rm=TRUE)
+    df$tpos <- 1.2*max(df[,y], na.rm=TRUE)
   }
   if (is.null(df$CentileText) & !is.na(selectedCnt)) {
     df$CentileText = ""
@@ -23,7 +23,7 @@ plotGroupPerformance <- function(df, x, y, cnt, selectedCnt = NA, addZero=FALSE)
   if (!is.na(selectedCnt)) 
     p <- p +
     geom_point(colour="red", size=9, data=df[df[,cnt] == selectedCnt, ], shape=18) +
-    geom_text(aes(y=tpos, label=CentileText), data=df[df[,cnt] == selectedCnt, ]) 
+    geom_text(aes(y=tpos, label=CentileText), data=df[df[,cnt] == selectedCnt, ], vjust=1) 
   
   p
 }
